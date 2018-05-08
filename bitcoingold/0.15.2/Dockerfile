@@ -36,4 +36,4 @@ COPY docker-entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 8337 8338 18337 18338 18443 18444
-CMD ["bgold"]
+CMD ["bgoldd"]
