@@ -4,12 +4,12 @@ set -e
 if [[ "$1" == "bgold-cli" || "$1" == "bitcoin-tx" || "$1" == "bgoldd" || "$1" == "test_bitcoin" ]]; then
 	mkdir -p "$BITCOIN_DATA"
 
-	cat <<-EOF > "$BITCOIN_DATA/bitcoin.conf"
+	cat <<-EOF > "$BITCOIN_DATA/bitcoingold.conf"
 	printtoconsole=1
 	rpcallowip=::/0
 	${BITCOIN_EXTRA_ARGS}
 	EOF
-	chown bitcoin:bitcoin "$BITCOIN_DATA/bitcoin.conf"
+	chown bitcoin:bitcoin "$BITCOIN_DATA/bitcoingold.conf"
 
 	# ensure correct ownership and linking of data directory
 	# we do not update group ownership here, in case users want to mount
