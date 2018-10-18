@@ -4,24 +4,24 @@ set -e
 if [[ "$1" == "bitcoin-cli" || "$1" == "bitcoin-tx" || "$1" == "bitcoind" || "$1" == "test_bitcoin" ]]; then
 	mkdir -p "$BITCOIN_DATA"
 
+	CONFIG_PREFIX=""
+	if [[ "${BITCOIN_NETWORK}" == "regtest" ]]; then
+		CONFIG_PREFIX=$'regtest=1\n[regtest]'
+	fi
+	if [[ "${BITCOIN_NETWORK}" == "testnet" ]]; then
+		CONFIG_PREFIX=$'testnet=1\n[test]'
+	fi
+	if [[ "${BITCOIN_NETWORK}" == "mainnet" ]]; then
+		CONFIG_PREFIX=$'mainnet=1\n[main]'
+	fi
+
 	cat <<-EOF > "$BITCOIN_DATA/bitcoin.conf"
+	${CONFIG_PREFIX}
 	printtoconsole=1
 	rpcallowip=::/0
 	${BITCOIN_EXTRA_ARGS}
 	EOF
 	chown bitcoin:bitcoin "$BITCOIN_DATA/bitcoin.conf"
-
-	# 0.17.0 expected the sections for mainnet and testnet to be called main and test.
-	# If you need testnet, you normally need a configuration file with
-	# testnet=1
-	# [test]
-	# blahblah=1
-	# It would require that configuration file produced by some templating engine takes 2 parameters
-	# instead of 1 (testnet and test)
-	# We fix this stupid design decision by accepting [testnet] or [mainnet] sections, and replacing
-	# them with [test] and [main]
-	sed -i "s/^\s*\[testnet\]/\[test\]/g" "$BITCOIN_DATA/bitcoin.conf"
-	sed -i "s/^\s*\[mainnet\]/\[main\]/g" "$BITCOIN_DATA/bitcoin.conf"
 
 	# ensure correct ownership and linking of data directory
 	# we do not update group ownership here, in case users want to mount
