@@ -20,8 +20,8 @@ if [[ "$1" == "bitcoin-cli" || "$1" == "bitcoin-tx" || "$1" == "bitcoind" || "$1
 	# instead of 1 (testnet and test)
 	# We fix this stupid design decision by accepting [testnet] or [mainnet] sections, and replacing
 	# them with [test] and [main]
-	sed -i "s/\[testnet\]/\[test\]/g" "$BITCOIN_DATA/bitcoin.conf"
-	sed -i "s/\[mainnet\]/\[main\]/g" "$BITCOIN_DATA/bitcoin.conf"
+	sed -i "s/^\s*\[testnet\]/\[test\]/g" "$BITCOIN_DATA/bitcoin.conf"
+	sed -i "s/^\s*\[mainnet\]/\[main\]/g" "$BITCOIN_DATA/bitcoin.conf"
 
 	# ensure correct ownership and linking of data directory
 	# we do not update group ownership here, in case users want to mount
