@@ -18,7 +18,7 @@ RUN set -ex \
 	&& cd /tmp \
 	&& wget -qO bitcoingold.tar.gz "$BITCOINGOLD_URL" \
 	&& echo "$BITCOINGOLD_SHA256 bitcoingold.tar.gz" | sha256sum -c - \
-	&& gpg --keyserver keyserver.ubuntu.com --recv-keys "$BITCOINGOLD_PGP_KEY" \
+	&& gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$BITCOINGOLD_PGP_KEY" \
 	&& wget -qO bitcoingold.asc "$BITCOINGOLD_ASC_URL" \
 	&& gpg --verify bitcoingold.asc \
 	&& tar -xzvf bitcoingold.tar.gz -C /usr/local --strip-components=1 --exclude=*-qt \

@@ -18,7 +18,7 @@ RUN set -ex \
 	&& cd /tmp \
 	&& wget -qO litecoin.tar.gz "$LITECOIN_URL" \
 	&& echo "$LITECOIN_SHA256 litecoin.tar.gz" | sha256sum -c - \
-	&& gpg --keyserver keyserver.ubuntu.com --recv-keys "$LITECOIN_PGP_KEY" \
+	&& gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$LITECOIN_PGP_KEY" \
 	&& wget -qO litecoin.asc "$LITECOIN_ASC_URL" \
 	&& gpg --verify litecoin.asc \
 	&& tar -xzvf litecoin.tar.gz -C /usr/local --strip-components=1 --exclude=*-qt \
