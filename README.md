@@ -124,7 +124,7 @@ $ ls -alh ./data
 
 By default, Docker runs all containers on a private bridge network. This means that you are unable to access the RPC port (8332) necessary to run `bitcoin-cli` commands.
 
-There are several methods to run `bitclin-cli` against a running `bitcoind` container. The easiest is to simply let your `bitcoin-cli` container share networking with your `bitcoind` container:
+There are several methods to run `bitcoin-cli` against a running `bitcoind` container. The easiest is to simply let your `bitcoin-cli` container share networking with your `bitcoind` container:
 
 ```
 $ docker run -d --rm --name bitcoind -v bitcoin-data:/data amacneil/bitcoin
