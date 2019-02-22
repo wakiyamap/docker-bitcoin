@@ -4,24 +4,31 @@ RUN groupadd -r groestlcoin && useradd -r -m -g groestlcoin groestlcoin
 
 RUN set -ex \
 	&& apt-get update \
-	&& apt-get install -qq --no-install-recommends ca-certificates dirmngr gosu wget \
+	&& apt-get install -qq --no-install-recommends ca-certificates dirmngr gosu pgp wget \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV GROESTLCOIN_VERSION 2.12.2
-ENV GROESTLCOIN_URL https://github.com/Groestlcoin/groestlcoin/releases/download/v2.17.2/groestlcoin-2.17.2-x86_64-linux-gnu.tar.gz
-ENV GROESTLCOIN_SHA256 0eed1a10f8dbb5a361bf74ee201acc47a124abb8916f66a263c95b8f9d1173b0
-ENV GROESTLCOIN_ASC_URL https://github.com/Groestlcoin/groestlcoin/releases/download/v2.17.2/SHA256SUMS.asc
+ENV GROESTLCOIN_VERSION 2.17.2
+ENV GROESTLCOIN_TARBALL groestlcoin-${GROESTLCOIN_VERSION}-x86_64-linux-gnu.tar.gz
+ENV GROESTLCOIN_URL https://github.com/Groestlcoin/groestlcoin/releases/download/v$GROESTLCOIN_VERSION/$GROESTLCOIN_TARBALL
+ENV GROESTLCOIN_ASC_URL https://github.com/Groestlcoin/groestlcoin/releases/download/v$GROESTLCOIN_VERSION/SHA256SUMS.asc
 ENV GROESTLCOIN_PGP_KEY 287AE4CA1187C68C08B49CB2D11BD4F33F1DB499
 
 # install groestlcoin binaries
 RUN set -ex \
 	&& cd /tmp \
-	&& wget -qO groestlcoin.tar.gz "$GROESTLCOIN_URL" \
-	&& echo "$GROESTLCOIN_SHA256 groestlcoin.tar.gz" | sha256sum -c - \
-	&& gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$GROESTLCOIN_PGP_KEY" \
+	&& wget -qO $GROESTLCOIN_TARBALL "$GROESTLCOIN_URL" \
+	&& for server in $(shuf -e ha.pool.sks-keyservers.net \
+                             hkp://p80.pool.sks-keyservers.net:80 \
+                             keyserver.ubuntu.com \
+                             hkp://keyserver.ubuntu.com:80 \
+                             pgp.mit.edu) ; do \
+         gpg --batch --keyserver "$server" --recv-keys "$GROESTLCOIN_PGP_KEY" && break || : ; \
+     done \
 	&& wget -qO groestlcoin.asc "$GROESTLCOIN_ASC_URL" \
 	&& gpg --verify groestlcoin.asc \
-	&& tar -xzvf groestlcoin.tar.gz -C /usr/local/bin --strip-components=1 --exclude=*-qt \
+	&& grep $GROESTLCOIN_TARBALL groestlcoin.asc | tee SHA256SUMS.asc \
+	&& sha256sum -c SHA256SUMS.asc \
+	&& tar -xzvf $GROESTLCOIN_TARBALL -C /usr/local/ --strip-components=1 --exclude=*-qt \
 	&& rm -rf /tmp/*
 
 # create data directory
