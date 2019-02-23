@@ -11,7 +11,7 @@ First, you should create a directory to keep your compose file in. Copy the exam
 ```sh
 $ mkdir bitcoin
 $ cd bitcoin
-$ wget https://raw.githubusercontent.com/amacneil/docker-bitcoin/master/example/docker-compose.yml
+$ wget https://raw.githubusercontent.com/NicolasDorier/docker-bitcoin/master/example/docker-compose.yml
 ```
 
 ### Launch bitcoind
@@ -44,4 +44,4 @@ command: bitcoind -testnet
 
 ### Running a specific fork or version
 
-The `docker-compose.yml` file can be edited to suit your needs. If you wish to run a specific version or fork of bitcoin, simply replace `amacneil/bitcoin` with the desired image.
+The `docker-compose.yml` file can be edited to suit your needs. If you wish to run a specific version or fork of bitcoin, simply replace `NicolasDorier/bitcoin` with the desired image.
