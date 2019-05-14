@@ -8,7 +8,8 @@ RUN set -ex \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV BITCOIN_VERSION 0.18.0
-ENV BITCOIN_URL https://bitcoincore.org/bin/bitcoin-core-0.18.0/bitcoin-0.18.0-x86_64-linux-gnu.tar.gz
+ENV BITCOIN_FILE bitcoin-0.18.0-x86_64-linux-gnu.tar.gz
+ENV BITCOIN_URL https://bitcoincore.org/bin/bitcoin-core-0.18.0/
 ENV BITCOIN_SHA256 5146ac5310133fbb01439666131588006543ab5364435b748ddfc95a8cb8d63f
 ENV BITCOIN_ASC_URL https://bitcoincore.org/bin/bitcoin-core-0.18.0/SHA256SUMS.asc
 ENV BITCOIN_PGP_KEY 01EA5486DE18A882D4C2684590C8019E36C2E964
@@ -16,12 +17,13 @@ ENV BITCOIN_PGP_KEY 01EA5486DE18A882D4C2684590C8019E36C2E964
 # install bitcoin binaries
 RUN set -ex \
 	&& cd /tmp \
-	&& wget -qO bitcoin.tar.gz "$BITCOIN_URL" \
-	&& echo "$BITCOIN_SHA256 bitcoin.tar.gz" | sha256sum -c - \
+	&& wget -qO "$BITCOIN_FILE" "$BITCOIN_URL$BITCOIN_FILE" \
+	&& echo "$BITCOIN_SHA256 $BITCOIN_FILE" | sha256sum -c - \
 	&& gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$BITCOIN_PGP_KEY" \
 	&& wget -qO bitcoin.asc "$BITCOIN_ASC_URL" \
+	&& sha256sum --ignore-missing --check bitcoin.asc \
 	&& gpg --verify bitcoin.asc \
-	&& tar -xzvf bitcoin.tar.gz -C /usr/local --strip-components=1 --exclude=*-qt \
+	&& tar -xzvf "$BITCOIN_FILE" -C /usr/local --strip-components=1 --exclude=*-qt \
 	&& rm -rf /tmp/*
 
 # create data directory
