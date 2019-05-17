@@ -1,20 +1,20 @@
 version: "3"
 services:
   bitcoind:
-    image: NicolasDorier/bitcoin
+    image: nicolasdorier/docker-bitcoin:0.18.0
     # specify additional command line arguments here
     command: bitcoind
     healthcheck:
       test: ["CMD", "/entrypoint.sh", "bitcoin-cli", "getinfo"]
     ports:
       # change to 18333 if running testnet
-      - "8333:8333"
+      - "18333:8333"
     volumes:
       - bitcoin-data:/data
     networks:
       - bitcoin
   bitcoin-cli:
-    image: NicolasDorier/bitcoin
+    image: nicolasdorier/docker-bitcoin:0.18.0
     entrypoint: ["/entrypoint.sh", "bitcoin-cli"]
     command: ""
     depends_on:

@@ -13,7 +13,7 @@ ENV BITCOIN_URL https://bitcoincore.org/bin/bitcoin-core-0.18.0/
 ENV BITCOIN_SHA256 5146ac5310133fbb01439666131588006543ab5364435b748ddfc95a8cb8d63f
 ENV BITCOIN_ASC_URL https://bitcoincore.org/bin/bitcoin-core-0.18.0/SHA256SUMS.asc
 ENV BITCOIN_PGP_KEY 01EA5486DE18A882D4C2684590C8019E36C2E964
-
+ENV BITCOIN_NETWORK mainnet
 # install bitcoin binaries
 RUN set -ex \
 	&& cd /tmp \
