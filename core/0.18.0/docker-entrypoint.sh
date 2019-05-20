@@ -18,7 +18,7 @@ if [[ "$1" == "bitcoin-cli" || "$1" == "bitcoin-tx" || "$1" == "bitcoind" || "$1
 	if [[ "$BITCOIN_WALLETDIR" ]]; then
 		NL=$'\n'
 		WALLETDIR="$BITCOIN_WALLETDIR/${BITCOIN_NETWORK}"
-		mkdir -p $WALLETDIR	
+		mkdir -p "$WALLETDIR"	
 		chown -R bitcoin:bitcoin "$WALLETDIR"
 		CONFIG_PREFIX="${CONFIG_PREFIX}${NL}walletdir=${WALLETDIR}${NL}"
 	fi
