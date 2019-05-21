@@ -8,7 +8,7 @@ services:
       test: ["CMD", "/entrypoint.sh", "bitcoin-cli", "getinfo"]
     ports:
       # change to 18333 if running testnet
-      - "18333:8333"
+      - "8333:8333"
     volumes:
       - bitcoin-data:/data
     networks:
