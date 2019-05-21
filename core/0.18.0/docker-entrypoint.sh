@@ -15,7 +15,7 @@ if [[ "$1" == "bitcoin-cli" || "$1" == "bitcoin-tx" || "$1" == "bitcoind" || "$1
 		CONFIG_PREFIX=$'mainnet=1\n[main]'
 	fi
 
-	if [[ "$BITCOIN_WALLETDIR" ]]; then
+	if [[ "$BITCOIN_WALLETDIR" ]] && [[ "$BITCOIN_NETWORK" ]]; then
 		NL=$'\n'
 		WALLETDIR="$BITCOIN_WALLETDIR/${BITCOIN_NETWORK}"
 		mkdir -p "$WALLETDIR"	
